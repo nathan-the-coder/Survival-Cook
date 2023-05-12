@@ -87,25 +87,25 @@ class START_GAME:
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if DISH1_BTN.checkForInput(GAME_MOUSE_POS):
                         if round == "STARTER":
-                            DO_DISH1(screen, "", "charcuterie")
+                            DO_DISH1(screen, "", "Charcuterie")
                         elif round == "MAIN COURSE":
-                            DO_DISH1(screen, "", "steak")
+                            DO_DISH1(screen, "", "Steak")
                         elif round == "DESSERT":
-                            DO_DISH1(screen, "", "sliced_cake")
+                            DO_DISH1(screen, "", "Sliced Cake")
                     if DISH2_BTN.checkForInput(GAME_MOUSE_POS):
                         if round == "STARTER":
-                            DO_DISH2(screen, "", "mushroom_soup")
+                            DO_DISH2(screen, "", "Mushroom Soup")
                         elif round == "MAIN COURSE":
-                            DO_DISH2(screen, "", "baked_salmon")
+                            DO_DISH2(screen, "", "Baked Salmon")
                         elif round == "DESSERT":
-                            DO_DISH2(screen, "", "ice_cream")
+                            DO_DISH2(screen, "", "Ice Cream")
                     if DISH3_BTN.checkForInput(GAME_MOUSE_POS):
                         if round == "STARTER":
-                            DO_DISH3(screen, "", "french_fries")
+                            DO_DISH3(screen, "", "French Fries")
                         elif round == "MAIN COURSE":
-                            DO_DISH3(screen, "", "spaghetti")
+                            DO_DISH3(screen, "", "Spaghetti")
                         elif round == "DESSERT":
-                            DO_DISH3(screen, "", "pudding")
+                            DO_DISH3(screen, "", "Pudding")
 
             pg.display.update()
 
@@ -166,9 +166,9 @@ class Starter:
                 if event.type == pg.MOUSEBUTTONDOWN:
                     if self.charcuterie.checkForInput(GAME_MOUSE_POS):
                         DO_DISH1(screen, "", "charcuterie")
-                        elif round == "MAIN COURSE":
-                            DO_DISH1(screen, "", "steak")
-                        elif round == "DESSERT":
+                    elif round == "MAIN COURSE":
+                        DO_DISH1(screen, "", "steak")
+                    elif round == "DESSERT":
                             DO_DISH1(screen, "", "sliced_cake")
                     if DISH2_BTN.checkForInput(GAME_MOUSE_POS):
                         if round == "STARTER":
@@ -194,7 +194,6 @@ class Dessert:
 
 class DISH_UI:
     def __init__(self, screen, dish_img, dish_name):
-        pg.display.set_caption("Survival Cook")
         sgame_bg = pg.image.load(path.join(BG_DIR, "2.jpg"))
         sgame_bg = pg.transform.scale(sgame_bg, (WIDTH, HEIGHT))
 
