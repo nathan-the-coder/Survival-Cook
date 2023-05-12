@@ -1,6 +1,9 @@
+import os.path as path
+
 import pygame as pg
-from vars import WIDTH, HEIGHT
+
 from ui import main_menu
+from vars import BG_DIR, HEIGHT, WIDTH
 
 
 class Game:
@@ -12,7 +15,7 @@ class Game:
 
         # Set the splash image and add a interval to tell
         # when the image will not be rendered
-        self.bg_file = "assets/bg_image\\1.jpg"
+        self.bg_file = path.join(BG_DIR, "1.jpg")
         bg_img = pg.image.load(self.bg_file).convert_alpha()
         self.bg_img = pg.transform.scale(bg_img, (width, height))
 
@@ -32,7 +35,6 @@ class Game:
         self.clock = pg.time.Clock()
 
     def draw(self):
-
         # Fill the screen with black background
         self.screen.fill((0, 0, 0))
 
@@ -74,6 +76,6 @@ class Game:
             self.counter += 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     game = Game(WIDTH, HEIGHT)
     game.run()

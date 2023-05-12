@@ -1,7 +1,8 @@
-import pygame as pg
 import random
-from vars import WIDTH, HEIGHT, SPRITES
 
+import pygame as pg
+
+from vars import HEIGHT, SPRITES, WIDTH
 
 
 class Sprite(pg.sprite.Sprite):
@@ -35,7 +36,7 @@ class Sprite(pg.sprite.Sprite):
 
     def update(self):
         if self.rect.x < 0:
-            self.rect.x = WIDTH-40
+            self.rect.x = WIDTH - 40
         elif self.rect.x > WIDTH:
             self.rect.x = 5
 
@@ -43,5 +44,3 @@ class Sprite(pg.sprite.Sprite):
             self.rect.x -= self.h_speed
         elif self.rightPressed and not self.leftPressed:
             self.rect.x += self.h_speed
-
-
