@@ -6,13 +6,9 @@ WIDTH = 1200
 HEIGHT = 650
 
 ROUND1_SPEED = 10
-ROUND2_SPEED = 20
-ROUND3_SPEED = 30
 
 BASE_DIR = "assets"
 STARTER_DIR = path.join(BASE_DIR, "meals", "starter")
-MAIN_DIR = path.join(BASE_DIR, "meals", "main")
-DESSERT_DIR = path.join(BASE_DIR, "meals", "dessert")
 BG_DIR = path.join(BASE_DIR, "bg_images")
 BTNS_DIR = path.join(BASE_DIR, "buttons")
 
@@ -61,47 +57,5 @@ MEALS = {
                 "Herbs": pg.image.load(path.join(STARTER_DIR, "starter_ing7.png")),
             },
         },
-    },
-    "Main Course": {
-        "Steak": {
-            "ing_count": 6,
-            "ingredients": {
-                "Seasoning": pg.image.load(path.join(MAIN_DIR, "main_ing1.png")),
-                "Butter": pg.image.load(path.join(MAIN_DIR, "main_ing2.png")),
-                "Garlic": pg.image.load(path.join(MAIN_DIR, "main_ing3.png")),
-                "Herbs": pg.image.load(path.join(MAIN_DIR, "main_ing4.png")),
-                "T-Bone": pg.image.load(path.join(MAIN_DIR, "main_ing5.png")),
-                "Asparagus": pg.image.load(path.join(MAIN_DIR, "main_ing6.png")),
-            },
-        },
-        "Baked Salmon": {
-            "ing_count": 6,
-            "ingredients": {
-                "Seasoning": pg.image.load(path.join(MAIN_DIR, "main_ing1.png")),
-                "Butter": pg.image.load(path.join(MAIN_DIR, "main_ing2.png")),
-                "Garlic": pg.image.load(path.join(MAIN_DIR, "main_ing3.png")),
-                "Herbs": pg.image.load(path.join(MAIN_DIR, "main_ing4.png")),
-                "Salmon": pg.image.load(path.join(MAIN_DIR, "main_ing7.png")),
-                "Asparagus": pg.image.load(path.join(MAIN_DIR, "main_ing6.png")),
-            },
-        },
-        "Spaghetti": {
-            "ing_count": 6,
-            "ingredients": {
-                "Seasoning": pg.image.load(path.join(MAIN_DIR, "main_ing1.png")),
-                "Garlic": pg.image.load(path.join(MAIN_DIR, "main_ing3.png")),
-                "Pasta Noodles": pg.image.load(path.join(MAIN_DIR, "main_ing8.png")),
-                "Onion": pg.image.load(path.join(MAIN_DIR, "main_ing9.png")),
-                "Tomato Sauce": pg.image.load(path.join(MAIN_DIR, "main_ing10.png")),
-                "Protein of Choice": pg.image.load(
-                    path.join(MAIN_DIR, "main_ing11.png")
-                ),
-            },
-        },
-    },
-    "Dessert": {
-        "Sliced Cake": pg.image.load(path.join(DESSERT_DIR, "dessert_dish1.png")),
-        "Ice Cream": pg.image.load(path.join(DESSERT_DIR, "dessert_dish2.png")),
-        "Pudding": pg.image.load(path.join(DESSERT_DIR, "dessert_dish3.png")),
     },
 }

@@ -3,7 +3,7 @@ import os.path as path
 import pygame as pg
 
 from ui import main_menu
-from vars import BG_DIR, HEIGHT, WIDTH, ROUND1_SPEED, ROUND2_SPEED, ROUND3_SPEED
+from vars import BG_DIR, HEIGHT, WIDTH
 
 
 
