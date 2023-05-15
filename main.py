@@ -6,7 +6,6 @@ from ui import main_menu
 from vars import BG_DIR, HEIGHT, WIDTH
 
 
-
 class Game:
     def __init__(self, width, height):
         pg.init()
@@ -61,7 +60,7 @@ class Game:
                 self.start()
 
     def start(self):
-        main_menu()
+        main_menu(self.screen)
 
     def change_bg(self, bg_file_index):
         self.bg_file = f"assets/bg_image\\{bg_file_index}.jpg"

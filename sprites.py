@@ -1,8 +1,6 @@
-import random
-
 import pygame as pg
 
-from vars import HEIGHT, SPRITES, WIDTH
+from vars import WIDTH
 
 
 class Sprite(pg.sprite.Sprite):
@@ -23,22 +21,22 @@ class Sprite(pg.sprite.Sprite):
 
     def handle_input(self, event):
         if event.type == pg.KEYDOWN:
-            if event.key == pg.K_a:
+            if event.key == pg.K_LEFT:
                 self.leftPressed = True
-            elif event.key == pg.K_d:
+            elif event.key == pg.K_RIGHT:
                 self.rightPressed = True
 
         elif event.type == pg.KEYUP:
-            if event.key == pg.K_a:
+            if event.key == pg.K_LEFT:
                 self.leftPressed = False
-            elif event.key == pg.K_d:
+            elif event.key == pg.K_RIGHT:
                 self.rightPressed = False
 
     def update(self):
         if self.rect.x < 0:
-            self.rect.x = WIDTH - 40
-        elif self.rect.x > WIDTH:
             self.rect.x = 5
+        elif self.rect.x > WIDTH:
+            self.rect.x = WIDTH - 300
 
         if self.leftPressed and not self.rightPressed:
             self.rect.x -= self.h_speed
