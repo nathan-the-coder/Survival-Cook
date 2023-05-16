@@ -4,10 +4,28 @@ from random import randint
 
 import pygame as pg
 
-from font import get_font
+from font import (
+    dessert_velocities,
+    get_font,
+    main_course_velocities,
+    starters_velocities,
+)
 from sprites import Sprite
-from vars import (BASE_DIR, BG_DIR, HEIGHT, GAME_OVER, MAX_FALL_HEIGHT, MEALS, SPRITES,
-                  STARTER_DIR, WIDTH, positions, velocities)
+from vars import (
+    BASE_DIR,
+    BG_DIR,
+    DESSERT_DIR,
+    HEIGHT,
+    GAME_OVER,
+    MAIN_COURSE_DIR,
+    MAX_FALL_HEIGHT,
+    MEALS,
+    ROUND,
+    SPRITES,
+    STARTER_DIR,
+    WIDTH,
+    positions,
+)
 
 import ui
 from button import Button
@@ -16,12 +34,13 @@ from music import play_music
 play_music()
 
 button_show = False
+
+
 class Button1:
     def __init__(self, text, position):
-        self.font = pg.font.Font('assets/font.ttf', 32)
-        self.text = self.font.render(text, True, (255, 255, 255))
+        self.font = pg.font.Font("assets/font.ttf", 40)
+        self.text = self.font.render(text, True, (255, 165, 0))
         self.rect = self.text.get_rect(center=position)
-
 
     def draw(self, screen):
         if button_show:
@@ -29,13 +48,13 @@ class Button1:
 
     def is_clicked(self, position):
         return self.rect.collidepoint(position)
+
 
 class Button2:
     def __init__(self, text, position):
-        self.font = pg.font.Font('assets/font.ttf', 20)
+        self.font = pg.font.Font("assets/font.ttf", 20)
         self.text = self.font.render(text, True, (255, 0, 0))
         self.rect = self.text.get_rect(center=position)
-
 
     def draw(self, screen):
         if button_show:
@@ -43,6 +62,7 @@ class Button2:
 
     def is_clicked(self, position):
         return self.rect.collidepoint(position)
+
 
 def options(screen):
     global button_show
@@ -50,7 +70,7 @@ def options(screen):
     buttons = [
         Button2("How to play", (90, 100)),
         Button2("Game Mechanics", (90, 200)),
-        Button2("Back", (90, 300))
+        Button2("Back", (90, 300)),
     ]
 
     htp_img = pg.image.load(path.join(BG_DIR, "3.jpg"))
@@ -75,24 +95,24 @@ def options(screen):
             elif event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 OPTION_MOUSE_POS = pg.mouse.get_pos()
                 if buttons[0].is_clicked(OPTION_MOUSE_POS):
-                   screen.blit(htp_img, (0, 0)) 
-                   button_show = False
-                   pg.display.flip()
+                    screen.blit(htp_img, (0, 0))
+                    button_show = False
+                    pg.display.flip()
                 if buttons[1].is_clicked(OPTION_MOUSE_POS):
-                   screen.blit(game_mechanics_img, (0, 0)) 
-                   button_show = False
-                   pg.display.flip()
+                    screen.blit(game_mechanics_img, (0, 0))
+                    button_show = False
+                    pg.display.flip()
                 if buttons[2].is_clicked(OPTION_MOUSE_POS):
                     ui.main_menu(screen)
 
-
-        
         pg.display.update()
+
 
 def game_over_screen(screen):
     global button_show
     game_over_text = pg.font.Font(None, 48).render("Game Over", True, (255, 0, 0))
-    main_menu_button = Button1("Main Menu", (400, 300))
+    game_over_bg = pg.image.load(path.join(BG_DIR, "2.jpg"))
+    game_over_bg = pg.transform.scale(game_over_bg, (WIDTH, HEIGHT))
     exit_button = Button1("Exit", (400, 350))
 
     while True:
@@ -102,32 +122,39 @@ def game_over_screen(screen):
                 sys.exit()
             elif event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
                 mouse_pos = pg.mouse.get_pos()
-                if main_menu_button.is_clicked(mouse_pos):
-                    return "main_menu"
-                elif exit_button.is_clicked(mouse_pos):
+                if exit_button.is_clicked(mouse_pos):
                     pg.quit()
                     sys.exit()
 
         screen.fill((0, 0, 0))
+        screen.blit(game_over_bg, (0, 0))
         screen.blit(game_over_text, (350, 200))
         button_show = True
         exit_button.draw(screen)
         pg.display.update()
 
+
 class START_GAME:
     def __init__(self, screen):
         pg.display.set_caption("Survival Cook")
-        starter_bg = pg.image.load(path.join(BG_DIR, "5.jpg"))
-        self.starter_bg = pg.transform.scale(starter_bg, (WIDTH, HEIGHT))
+        if ROUND == 1:
+            background_img = pg.image.load(path.join(BG_DIR, "5.jpg"))
+        elif ROUND == 2:
+            background_img = pg.image.load(path.join(BG_DIR, "6.jpg"))
+        else:
+            background_img = pg.image.load(path.join(BG_DIR, "7.jpg"))
 
-        dish1_img = pg.image.load(path.join(STARTER_DIR, "2.png")).convert_alpha()
-        self.dish1_img = pg.transform.scale(dish1_img, (215, 170))
-        dish2_img = pg.image.load(path.join(STARTER_DIR, "1.png")).convert_alpha()
-        self.dish2_img = pg.transform.scale(dish2_img, (230, 200))
+        self.background_img = pg.transform.scale(background_img, (WIDTH, HEIGHT))
 
-        self.dish3_img = pg.image.load(path.join(STARTER_DIR, "3.png")).convert_alpha()
+        if ROUND == 1:
+            self.setup_dish_img("Starter")
+        elif ROUND == 2:
+            self.setup_dish_img("Main Course")
+        else:
+            self.setup_dish_img("Dessert")
 
         self.screen = screen
+
         self.buttons = [
             Button(
                 image=self.dish1_img,
@@ -155,13 +182,57 @@ class START_GAME:
             ),
         ]
 
-        self.dish1 = DO_DISH1(self.screen, "Charcuterie")
-        self.dish2 = DO_DISH2(self.screen, "Mushroom Soup")
-        self.dish3 = DO_DISH3(self.screen, "French Fries")
+        if ROUND == 1:
+            self.dish1 = DO_DISH1(self.screen, "Charcuterie")
+            self.dish2 = DO_DISH2(self.screen, "Mushroom Soup")
+            self.dish3 = DO_DISH3(self.screen, "French Fries")
+        elif ROUND == 2:
+            self.dish1 = DO_DISH1(self.screen, "Steak")
+            self.dish2 = DO_DISH2(self.screen, "Baked Salmon")
+            self.dish3 = DO_DISH3(self.screen, "Spaghetti")
+        else:
+            self.dish1 = DO_DISH1(self.screen, "Sliced Cake")
+            self.dish2 = DO_DISH2(self.screen, "Ice Cream")
+            self.dish3 = DO_DISH3(self.screen, "Pudding")
+
+    def setup_dish_img(self, dish_type):
+        if dish_type == "Starter":
+            dish1_img = pg.image.load(path.join(STARTER_DIR, "2.png")).convert_alpha()
+            self.dish1_img = pg.transform.scale(dish1_img, (215, 170))
+            dish2_img = pg.image.load(path.join(STARTER_DIR, "1.png")).convert_alpha()
+            self.dish2_img = pg.transform.scale(dish2_img, (230, 200))
+
+            self.dish3_img = pg.image.load(
+                path.join(STARTER_DIR, "3.png")
+            ).convert_alpha()
+        elif dish_type == "Main Course":
+            dish1_img = pg.image.load(
+                path.join(MAIN_COURSE_DIR, "1.png")
+            ).convert_alpha()
+            self.dish1_img = pg.transform.scale(dish1_img, (215, 170))
+            dish2_img = pg.image.load(
+                path.join(MAIN_COURSE_DIR, "2.png")
+            ).convert_alpha()
+            self.dish2_img = pg.transform.scale(dish2_img, (230, 200))
+
+            self.dish3_img = pg.image.load(
+                path.join(MAIN_COURSE_DIR, "3.png")
+            ).convert_alpha()
+        else:
+            dish1_img = pg.image.load(
+                path.join(DESSERT_DIR, "dessert_dish1.png")
+            ).convert_alpha()
+            self.dish1_img = pg.transform.scale(dish1_img, (215, 170))
+            dish2_img = pg.image.load(path.join(DESSERT_DIR, "dessert_dish2.png")).convert_alpha()
+            self.dish2_img = pg.transform.scale(dish2_img, (230, 200))
+
+            self.dish3_img = pg.image.load(
+                path.join(DESSERT_DIR, "dessert_dish3.png")
+            ).convert_alpha()
 
     def start(self):
         while True:
-            self.screen.blit(self.starter_bg, (0, 0))
+            self.screen.blit(self.background_img, (0, 0))
 
             GAME_MOUSE_POS = pg.mouse.get_pos()
             for button in self.buttons:
@@ -183,7 +254,6 @@ class START_GAME:
 
             pg.display.update()
 
-
 class DISH_UI:
     def __init__(self, screen, dish_name):
         global GAME_OVER
@@ -202,6 +272,63 @@ class DISH_UI:
         self.current_dish = pg.transform.scale(self.current_dish, (215, 170))
         self.game_over = False
 
+    def move_ingredients_one(self, dish_type):
+        global GAME_OVER
+        if dish_type == 'Dessert':
+            for i in range(len(MEALS[dish_type])):
+                x, y = positions[i]
+                if ROUND == 1:
+                    vel = starters_velocities[i]
+                    y += vel
+                elif ROUND == 2:
+                    vel = main_course_velocities[i]
+                    y += vel
+                else:
+                    vel = dessert_velocities[i]
+                    y += vel
+
+                if y >= MAX_FALL_HEIGHT:
+                    GAME_OVER = True
+                    y = 0
+                    x = randint(10, 1100)
+                positions[i] = (x, y)
+        else:
+            for i in range(len(MEALS[dish_type][self.dish_name]["ingredients"])):
+                x, y = positions[i]
+                if ROUND == 1:
+                    vel = starters_velocities[i]
+                    y += vel
+                elif ROUND == 2:
+                    vel = main_course_velocities[i]
+                    y += vel
+                else:
+                    vel = dessert_velocities[i]
+                    y += vel
+
+                if y >= MAX_FALL_HEIGHT:
+                    GAME_OVER = True
+                    y = 0
+                    x = randint(10, 1100)
+                positions[i] = (x, y)
+
+    def move_ingredients_two(self, dish_type):
+        if dish_type == 'Dessert':
+            for i in range(len(MEALS['Dessert'])):
+                ingredient = MEALS['Dessert'][i]
+                ingredient_img = pg.transform.scale(ingredient, (75, 75))
+                x, y = positions[i]
+                self.update_pos(x, y, ingredient_img)
+                if y == self.pot.rect.y and x == self.pot.rect.x:
+                    self.update_pos(x, y, ingredient_img)
+        else:
+            for i in range(len(MEALS[dish_type][self.dish_name]["ingredients"])):
+                ingredient = MEALS[dish_type][self.dish_name]["ingredients"][i]
+                ing_rect = ingredient.get_rect()
+                ingredient_img = pg.transform.scale(ingredient, (75, 75))
+                x, y = positions[i]
+                self.update_pos(x, y, ingredient_img)
+                if ing_rect.y == self.pot.rect.y and ing_rect.x == self.pot.rect.x:
+                    self.update_pos(x, y, ingredient_img)
 
     def run(self):
         global GAME_OVER
@@ -211,15 +338,12 @@ class DISH_UI:
             # This make the ingredients move down and side
             self.count += 10
             try:
-                for i in range(len(MEALS["Starter"][self.dish_name]["ingredients"])):
-                    x, y = positions[i]
-                    vel = velocities[i]
-                    y += vel
-                    if y >= MAX_FALL_HEIGHT:
-                        GAME_OVER = True
-                        y = 0
-                        x = randint(10, 1100)
-                    positions[i] = (x, y)
+                if ROUND == 1:
+                    self.move_ingredients_one("Starter")
+                elif ROUND == 2:
+                    self.move_ingredients_one("Main Course")
+                else:
+                    self.move_ingredients_one("Dessert")
             except IndexError as e:
                 raise e
 
@@ -237,14 +361,12 @@ class DISH_UI:
             # This makes the ingredients to fall from top to bottom
             # TODO: if the item y position is player y position add it to the collected item
             # TODO: and remove that item in the list at the side of the screen
-            for i in range(len(MEALS["Starter"][self.dish_name]["ingredients"])):
-                ingredient = MEALS["Starter"][self.dish_name]["ingredients"][i]
-                ingredient_img = pg.transform.scale(ingredient, (75, 75))
-                x, y = positions[i]
-                self.update_pos(x, y, ingredient_img)
-                if y == self.pot.rect.y and x == self.pot.rect.x:
-                    print(ingredient)
-                    self.update_pos(x, y, ingredient_img)
+            if ROUND == 1:
+                self.move_ingredients_two("Starter")
+            elif ROUND == 2:
+                self.move_ingredients_two("Main Course")
+            else:
+                self.move_ingredients_two("Dessert")
 
             # Draw non-moving ingredients to show what need to be collected
             # TODO: remove the item that was collected by the player in the list of ingredients
@@ -269,12 +391,28 @@ class DISH_UI:
 
     def draw_ingredients(self):
         y_pos = 30
-        for i in range(len(MEALS["Starter"][self.dish_name]["ingredients"])):
-            ingredient = MEALS["Starter"][self.dish_name]["ingredients"][i]
-            ingredient_img = pg.transform.scale(ingredient, (64, 64))
+        if ROUND == 1:
+            for i in range(len(MEALS["Starter"][self.dish_name]["ingredients"])):
+                ingredient = MEALS["Starter"][self.dish_name]["ingredients"][i]
+                ingredient_img = pg.transform.scale(ingredient, (64, 64))
 
-            self.screen.blit(ingredient_img, (1120, y_pos))
-            y_pos += 60
+                self.screen.blit(ingredient_img, (1120, y_pos))
+                y_pos += 60
+
+        elif ROUND == 2:
+            for i in range(len(MEALS["Main Course"][self.dish_name]["ingredients"])):
+                ingredient = MEALS["Main Course"][self.dish_name]["ingredients"][i]
+                ingredient_img = pg.transform.scale(ingredient, (64, 64))
+
+                self.screen.blit(ingredient_img, (1120, y_pos))
+                y_pos += 60
+        else:
+            for i in range(len(MEALS["Dessert"])):
+                ingredient = MEALS["Dessert"][i]
+                ingredient_img = pg.transform.scale(ingredient, (64, 64))
+
+                self.screen.blit(ingredient_img, (1120, y_pos))
+                y_pos += 80
 
     def update_pos(self, x, y, image):
         # update image position

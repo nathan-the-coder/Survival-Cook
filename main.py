@@ -29,7 +29,6 @@ class Game:
         self.counter = 0
         # ---------------------------
 
-
         # Set program title
         pg.display.set_caption("Survival Cook")
 

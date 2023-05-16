@@ -10,7 +10,7 @@ class Sprite(pg.sprite.Sprite):
         self.image = pg.image.load(image)
         self.rect = self.image.get_rect()
         self.leftPressed, self.rightPressed = False, False
-        self.h_speed = 20
+        self.h_speed = 30
 
         self.collected_ingredients = []
         self.rect.x = 500
