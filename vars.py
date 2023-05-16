@@ -13,7 +13,10 @@ STARTER_DIR = path.join(BASE_DIR, "meals", "starter")
 BG_DIR = path.join(BASE_DIR, "bg_images")
 BTNS_DIR = path.join(BASE_DIR, "buttons")
 
+
+GAME_OVER = False
 SPRITES = pg.sprite.Group()
+
 positions = [(100, 0), (300, 0), (500, 0), (700, 0), (900, 0), (1100, 0)]
 velocities = [10, 10, 10, 10, 10, 10]
 

@@ -3,12 +3,19 @@ import os.path as path
 import pygame as pg
 
 from ui import main_menu
-from vars import BG_DIR, HEIGHT, WIDTH
+from vars import BG_DIR, HEIGHT, WIDTH, BASE_DIR
+
+from music import play_music
+
+play_music()
 
 
 class Game:
     def __init__(self, width, height):
         pg.init()
+
+        # Define screen where we render sprites and animations
+        self.screen = pg.display.set_mode((width, height))
 
         # Set the game icon
         pg.display.set_icon(pg.image.load("assets/icon.png"))
@@ -22,8 +29,6 @@ class Game:
         self.counter = 0
         # ---------------------------
 
-        # Define screen where we render sprites and animations
-        self.screen = pg.display.set_mode((width, height))
 
         # Set program title
         pg.display.set_caption("Survival Cook")

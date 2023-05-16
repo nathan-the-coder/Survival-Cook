@@ -16,7 +16,6 @@ Ensure that Python and Pygame are properly installed before running the game.
 ### To run the game:
 
 - Ensure that Python and Pygame are installed.
-- Download the provided code files (main.py, button.py, font.py, sprites.py, vars.py).
 - Open a terminal or command prompt and navigate to the directory containing the code files.
 - Run the following command: python main.py
 - The game will start, and you can interact with the start screen to select a dish and play the game.
